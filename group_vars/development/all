@@ -1,0 +1,21 @@
+---
+# Development Environment - normally dev, int, stg, prod
+ansible_environment: dev
+
+# build directory - where executables and libraries are stored on deployment server
+build_dir: /usr/nano/build
+
+# installation directories infrastructure executables, associated data, and log files
+inf_app_path: /usr/nano/local
+inf_data_path: /usr/nano/local/data
+inf_log_path: /usr/nano/local/log
+
+# Common group used by infrastructure components
+inf_group: nanocore
+
+# Configuration directory
+etc_conf: /etc
+
+# Runtime process management
+pid_path: /var/run
+lock_path: /var/lock

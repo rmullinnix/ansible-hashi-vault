@@ -1,0 +1,25 @@
+# This task list initializes the first vault (master)
+#   once one vault is initialized, all vaults can be unsealed
+#   this is task list 2 of 3
+---
+  - name: Start the master vault
+    service: name=vault state=restarted
+
+  - name: Ensure vault port is active and listening
+    wait_for: port={{ vault_port }} state=started
+
+  # deploy the go program to connect to the vault and start the initialization
+  - name: Copy vault init program
+    copy: src="{{ build_dir }}/{{ ansible_environment }}/vault/vault_init" dest="/tmp/vault_init" mode=700
+
+  # run the init program and store the keys in a temporary file
+  - name: Initialize the vault
+    command: "/tmp/vault_init -mode init -port {{ vault_port }} -file /tmp/vaultkeys.{{ ansible_environment }}"
+
+  # pull the keys back and store in the roles/vault/vars directory to be used by unseal tasks
+  - name: Retrieve the vault keys
+    fetch: src="/tmp/vaultkeys.{{ ansible_environment }}" dest=roles/vault/vars/ flat=yes
+
+  # delete the keys from the remove server
+  - name: Remove the vault keys from the host
+    file: path="/tmp/vaultkeys.{{ ansible_environment }}" state=absent

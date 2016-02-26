@@ -1,0 +1,10 @@
+---
+  - name: Create main directorys (etc config, pid path, and lock path)
+    file: path={{ item }} state=directory mode=755
+    with_items:
+      - "{{ pid_path }}"
+      - "{{ lock_path }}"
+      - "{{ lock_path }}/subsys"
+      - "{{ inf_app_path }}"
+      - "{{ inf_log_path }}"
+      - "{{ inf_data_path }}"

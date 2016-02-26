@@ -1,0 +1,38 @@
+# This Playbook deploys the hashicorp vault to all servers running consul
+#   consul must be deployed and running for the deployment to complete
+#   This is a three step process
+#   1.  Deploy vault to all servers
+#   2.  Start and initialize the vaultmaster (single server)
+#   3.  Start remaining vaults and unseal all vaults
+#
+#   The vault keys are created in step 2 and pulled back to deployment server
+#   They are stored in the roles/vault/vars directory
+#   You should secure the vaultkeys file at the completion of the playbook
+---
+- hosts: consulservers:consulagents
+  become: yes
+
+  vars:
+    vault_mode: "install"
+
+  roles:
+    - common
+    - vault
+
+- hosts: vaultmaster
+  become: yes
+
+  vars:
+    vault_mode: "init"
+
+  roles:
+    - vault
+
+- hosts: consulservers:consulagents
+  become: yes
+
+  vars:
+    vault_mode: "unseal"
+
+  roles:
+    - vault

@@ -1,0 +1,6 @@
+# hashicorp vault configuration
+vault_port: 8200
+vault_app_path: "{{ inf_app_path }}/vault"
+vault_mlock_disable: "true"
+vault_tls_disable: 1
+vault_log_level: INFO

@@ -1,0 +1,23 @@
+# This task list deploys the vault to all servers and installs as a service
+#   this is task list 1 of 3
+---
+  - name: Create Vault bin, config, data, and log directories
+    file: path={{ item }} state=directory owner={{ consul_user }} group={{ consul_group }} mode=755
+    with_items:
+      - "{{ vault_app_path }}"
+      - "{{ vault_app_path }}/bin"
+      - "{{ vault_app_path }}/conf"
+      - "{{ inf_log_path }}"
+
+  - name: Copy vault executable
+    copy: src={{ build_dir }}/{{ ansible_environment }}/vault/vault dest={{ vault_app_path }}/bin/vault owner="{{ consul_user }}" group="{{ consul_group }}" mode=744
+
+  - name: Create Vault config
+    template: src=vault.hcl dest={{ vault_app_path }}/conf/vault.hcl owner="{{ consul_user }}" group="{{ consul_group }}" mode=744
+
+  - name: Create Vault init.d script
+    template: src=vault.init.d dest=/etc/init.d/vault mode=744
+
+  # install as a service - linux specific (maybe SUSE specific)
+  - name: Install vault as a service
+    command: /sbin/insserv -f vault 

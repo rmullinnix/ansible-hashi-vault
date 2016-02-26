@@ -1,0 +1,13 @@
+# Consul configuration
+consul_app_path: "{{ inf_app_path }}consul"
+consul_data_dir: "{{ inf_data_path }}"
+consul_log_dir: "{{ inf_log_path }}"
+consul_port: 8500
+consul_dns_port: 8600
+consul_rpc_port: 8400
+consul_serf_lan_port: 8301
+consul_serf_wan_port: 8302
+consul_server_port: 8300
+consul_config_dir: "{{ inf_data_path }}/consul.d"
+consul_user: consul
+consul_group: "{{ inf_group }}"

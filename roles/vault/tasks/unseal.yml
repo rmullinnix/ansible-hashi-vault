@@ -1,0 +1,19 @@
+# This task list unseals all deployed vaults
+#   this is task list 3 of 3
+#   (this is hard-coded to use 3 vault keys)
+#   (todo: support variable number of keys)
+---
+  - include_vars: "vaultkeys.{{ ansible_environment }}"
+
+  - name: Start the other vault servers
+    service: name=vault state=started
+    when: "'vaultmaster' not in group_names"
+
+  - name: unseal the vault with key 1
+    command: "{{ vault_app_path }}/bin/vault unseal -address http://127.0.0.1:8200 {{ vault_key_1 }}"
+
+  - name: unseal the vault with key 2
+    command: "{{ vault_app_path }}/bin/vault unseal -address http://127.0.0.1:8200 {{ vault_key_2 }}"
+
+  - name: unseal the vault with key 3
+    command: "{{ vault_app_path }}/bin/vault unseal -address http://127.0.0.1:8200 {{ vault_key_3 }}"

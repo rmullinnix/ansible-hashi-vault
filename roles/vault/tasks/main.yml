@@ -1,0 +1,13 @@
+# This is the main task list that executes task list 1-3
+#   1.  Install vault on all servers
+#   2.  Start vault master and initialize vault, retrieve vault keys
+#   3.  Start remaining vault servers and unseal all vaults
+---
+  - include: install.yml
+    when: vault_mode == "install"
+
+  - include: init.yml
+    when: vault_mode == "init"
+
+  - include: unseal.yml
+    when: vault_mode == "unseal"

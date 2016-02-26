@@ -1,0 +1,17 @@
+[consulagents]
+yourserver1.domain.com
+yourserver2.domain.com
+yourserver3.domain.com
+
+[consulservers]
+yourserver4.domain.com
+yourserver5.domain.com
+yourserver6.domain.com
+
+[vaultmaster]
+yourserver1.domain.com
+
+[development:children]
+consulagents
+consulservers
+vaultmaster
